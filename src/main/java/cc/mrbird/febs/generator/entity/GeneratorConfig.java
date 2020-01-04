@@ -83,6 +83,13 @@ public class GeneratorConfig {
     private String controllerPackage;
 
     /**
+     * html文件存放路径
+     */
+    @TableField("html_package")
+    @Size(max = 20, message = "{noMoreThan}")
+    private String htmlPackage;
+
+    /**
      * 是否去除前缀
      */
     @TableField("is_trim")

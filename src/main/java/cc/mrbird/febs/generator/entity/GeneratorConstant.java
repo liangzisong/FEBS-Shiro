@@ -46,6 +46,10 @@ public class GeneratorConstant {
      */
     public static final String MAPPERXML_FILE_SUFFIX = "Mapper.xml";
     /**
+     * html文件类型后缀
+     */
+    public static final String HTML_FILE_SUFFIX = ".html";
+    /**
      * entity模板
      */
     public static final String ENTITY_TEMPLATE = "entity.ftl";
@@ -69,4 +73,24 @@ public class GeneratorConstant {
      * mapper xml接口模板
      */
     public static final String MAPPERXML_TEMPLATE = "mapperXml.ftl";
+
+    /**
+     * html list 模板
+     */
+    public static final String HTMLLIST_TEMPLATE = "list.ftl";
+
+    /**
+     * html add 模板
+     */
+    public static final String HTMLADD_TEMPLATE = "add.ftl";
+
+    /**
+     * html view 模板
+     */
+    public static final String HTMLVIEW_TEMPLATE = "view.ftl";
+
+    /**
+     * html update 模板
+     */
+    public static final String HTMLUPDATE_TEMPLATE = "update.ftl";
 }

@@ -74,6 +74,9 @@ public class GeneratorController extends BaseController {
             generatorHelper.generateServiceFile(columns, generatorConfig);
             generatorHelper.generateServiceImplFile(columns, generatorConfig);
             generatorHelper.generateControllerFile(columns, generatorConfig);
+            generatorHelper.generateHtmlListFile(columns, generatorConfig);
+            generatorHelper.generateHtmlAddFile(columns, generatorConfig);
+            generatorHelper.generateHtmlUpdateFile(columns, generatorConfig);
             // 打包
             String zipFile = System.currentTimeMillis() + SUFFIX;
             FileUtil.compress(GeneratorConstant.TEMP_PATH + "src", zipFile);

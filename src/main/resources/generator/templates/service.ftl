@@ -47,9 +47,10 @@ public interface I${className}Service extends IService<${className}> {
     void update${className}(${className} ${className?uncap_first});
 
     /**
-     * 删除
-     *
-     * @param ${className?uncap_first} ${className?uncap_first}
-     */
-    void delete${className}(${className} ${className?uncap_first});
+    * 删除
+    *
+    * @param List -> id
+    */
+    Integer delete${className}ByIds(ArrayList<String> idArray);
+
 }

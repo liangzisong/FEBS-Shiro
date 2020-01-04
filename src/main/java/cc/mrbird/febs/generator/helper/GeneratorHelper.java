@@ -91,6 +91,76 @@ public class GeneratorHelper {
         generateFileByTemplate(templateName, mapperXmlFile, data);
     }
 
+    /**
+     * 生成html 列表代码
+     * @param columns
+     * @param configure
+     * @throws Exception
+     */
+    public void generateHtmlListFile(List<Column> columns, GeneratorConfig configure) throws Exception {
+        String suffix = GeneratorConstant.HTML_FILE_SUFFIX;
+        String path = getFilePath(configure, configure.getHtmlPackage(), suffix, false);
+        String templateName = GeneratorConstant.HTMLLIST_TEMPLATE;
+        File mapperXmlFile = new File(path);
+        JSONObject data = toJSONObject(configure);
+        columns.forEach(c -> c.setField(FebsUtil.underscoreToCamel(StringUtils.lowerCase(c.getName()))));
+        data.put("columns", columns);
+        generateFileByTemplate(templateName, mapperXmlFile, data);
+    }
+
+    /**
+     * 生成html 添加代码
+     * @param columns
+     * @param configure
+     * @throws Exception
+     */
+    public void generateHtmlAddFile(List<Column> columns, GeneratorConfig configure) throws Exception {
+        String suffix = GeneratorConstant.HTML_FILE_SUFFIX;
+        String path = getFilePath(configure, configure.getHtmlPackage(), suffix, false);
+        String templateName = GeneratorConstant.HTMLADD_TEMPLATE;
+        File mapperXmlFile = new File(path);
+        JSONObject data = toJSONObject(configure);
+        columns.forEach(c -> c.setField(FebsUtil.underscoreToCamel(StringUtils.lowerCase(c.getName()))));
+        data.put("columns", columns);
+        generateFileByTemplate(templateName, mapperXmlFile, data);
+    }
+
+    /**
+     * 生成html 修改代码
+     * @param columns
+     * @param configure
+     * @throws Exception
+     */
+    public void generateHtmlUpdateFile(List<Column> columns, GeneratorConfig configure) throws Exception {
+        String suffix = GeneratorConstant.HTML_FILE_SUFFIX;
+        String path = getFilePath(configure, configure.getHtmlPackage(), suffix, false);
+        String templateName = GeneratorConstant.HTMLUPDATE_TEMPLATE;
+        File mapperXmlFile = new File(path);
+        JSONObject data = toJSONObject(configure);
+        columns.forEach(c -> c.setField(FebsUtil.underscoreToCamel(StringUtils.lowerCase(c.getName()))));
+        data.put("columns", columns);
+        generateFileByTemplate(templateName, mapperXmlFile, data);
+    }
+
+    /**
+     * 生成html 查看代码
+     * @param columns
+     * @param configure
+     * @throws Exception
+     */
+    public void generateHtmlViewFile(List<Column> columns, GeneratorConfig configure) throws Exception {
+        String suffix = GeneratorConstant.HTML_FILE_SUFFIX;
+        String path = getFilePath(configure, configure.getHtmlPackage(), suffix, false);
+        String templateName = GeneratorConstant.HTMLVIEW_TEMPLATE;
+        File mapperXmlFile = new File(path);
+        JSONObject data = toJSONObject(configure);
+        columns.forEach(c -> c.setField(FebsUtil.underscoreToCamel(StringUtils.lowerCase(c.getName()))));
+        data.put("columns", columns);
+        generateFileByTemplate(templateName, mapperXmlFile, data);
+    }
+
+
+
     @SuppressWarnings("UnstableApiUsage")
     private void generateFileByTemplate(String templateName, File file, Object data) throws Exception {
         Template template = getTemplate(templateName);
@@ -125,12 +195,21 @@ public class GeneratorHelper {
 
     private Template getTemplate(String templateName) throws Exception {
         Configuration configuration = new freemarker.template.Configuration(Configuration.VERSION_2_3_23);
-        String templatePath = GeneratorHelper.class.getResource("/generator/templates/").getPath();
+        String tempPath = "generator/templates/";
+        if(
+                GeneratorConstant.HTMLLIST_TEMPLATE.equals(templateName)
+                || GeneratorConstant.HTMLADD_TEMPLATE.equals(templateName)
+                || GeneratorConstant.HTMLUPDATE_TEMPLATE.equals(templateName)
+                || GeneratorConstant.HTMLVIEW_TEMPLATE.equals(templateName)
+        ){
+            tempPath = tempPath + "html/";
+        }
+        String templatePath = GeneratorHelper.class.getResource("/"+tempPath).getPath();
         File file = new File(templatePath);
         if (!file.exists()) {
             templatePath = System.getProperties().getProperty("java.io.tmpdir");
             file = new File(templatePath + "/" + templateName);
-            FileUtils.copyInputStreamToFile(Objects.requireNonNull(AddressUtil.class.getClassLoader().getResourceAsStream("classpath:generator/templates/" + templateName)), file);
+            FileUtils.copyInputStreamToFile(Objects.requireNonNull(AddressUtil.class.getClassLoader().getResourceAsStream("classpath:"+ tempPath + templateName)), file);
         }
         configuration.setDirectoryForTemplateLoading(new File(templatePath));
         configuration.setDefaultEncoding("UTF-8");
@@ -138,4 +217,6 @@ public class GeneratorHelper {
         return configuration.getTemplate(templateName);
 
     }
+
+
 }

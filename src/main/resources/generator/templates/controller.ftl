@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -74,16 +75,21 @@ public class ${className}Controller extends BaseController {
     }
 
     @Log("删除${className}")
-    @GetMapping("${className?uncap_first}/delete")
+    @GetMapping("${className?uncap_first}/delete/{${className}Ids}")
     @ResponseBody
     @RequiresPermissions("${className?uncap_first}:delete")
-    public FebsResponse delete${className}(${className} ${className?uncap_first}) throws FebsException {
+    public FebsResponse delete${className}(@NotBlank(message = "{required}") @PathVariable String ${className}Ids) throws FebsException {
         try {
-            this.${className?uncap_first}Service.delete${className}(${className?uncap_first});
-            return new FebsResponse().success();
+            String[] ids = StringUtils.split(${className}Ids, StringPool.COMMA);
+            ArrayList<String> idArray = new ArrayList<>(Arrays.asList(ids));
+            Integer deleteCount = this.${className?uncap_first}Service.delete${className}ByIds(idArray);
+            return new FebsResponse().success(deleteCount);
         } catch (Exception e) {
-            String message = "删除${className}失败";
-            log.error(message, e);
+            String message = e.getMessage();
+            if(! (e instanceof FebsException)){
+                message = "删除${className}失败";
+                log.error(message, e);
+            }
             throw new FebsException(message);
         }
     }
